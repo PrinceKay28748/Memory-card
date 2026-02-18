@@ -1,0 +1,13 @@
+.header{
+  
+    font-weight: regular;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.maindiv{
+   align-items: center;
+   display: flex;
+   justify-content: center;
+}
