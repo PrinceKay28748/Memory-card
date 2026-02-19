@@ -1,11 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
-import useNASA from "./hooks/useNASA";
+import useNASA from "./components/Usenasa";
 import Header from "./components/Header";
 import ScoreBoard from "./components/Scoreboard";
 import GameBoard from "./components/GameBoard";
-import LoadingScreen from "./components/loadingScreenoadingScreen";
+import LoadingScreen from "./components/loadingScreen";
 import GameOverModal from "./components/GameOverModal";
-import "./styles/App.css";
+import "./App.css";
 
 const CARD_COUNT = 12;
 
@@ -78,14 +78,24 @@ export default function App() {
 
   if (loading) return <LoadingScreen />;
 
-  if (error)
+  if (error) {
+    const is503 = error.includes("503");
+    const is429 = error.includes("429");
     return (
       <div className="error-screen">
         <span className="error-icon">🛸</span>
-        <p>Failed to reach NASA. Check your connection.</p>
+        <p>
+          {is503
+            ? "NASA's servers are temporarily unavailable. Try again in a moment."
+            : is429
+            ? "Rate limit hit. Wait a few minutes or add a personal NASA API key."
+            : "Failed to reach NASA. Check your connection."}
+        </p>
+        <span className="error-code">{error}</span>
         <button onClick={refetch} className="btn btn--primary">Retry</button>
       </div>
     );
+  }
 
   return (
     <div className="app">
